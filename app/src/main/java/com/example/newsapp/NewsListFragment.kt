@@ -1,5 +1,6 @@
 package com.example.newsapp
 
+import android.R
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -45,6 +47,12 @@ class NewsListFragment : Fragment() {
         val adapter = NewsListAdapter(emptyList())
         binding.NewsRecyclerView.adapter = adapter
         Log.d("NewsListFragment", "i am in newslistfragment")
+
+        val categorySpinner = binding.newsCategories
+        val categoryList = listOf("General", "Business", "Entertainment", "Health", "Science", "Sports", "Technology") // Example category list
+        val spinnerAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, categoryList)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        categorySpinner.adapter = spinnerAdapter
 
 
         newsListViewModel.articles.observe(viewLifecycleOwner) { newsList ->
