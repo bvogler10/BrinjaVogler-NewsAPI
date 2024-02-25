@@ -29,7 +29,6 @@ class NewsListFragment : Fragment() {
 
     private val newsListViewModel: NewsListViewModel by viewModels()
 
-
 //
 //    companion object {
 //        fun newInstance() = NewsListFragment()
