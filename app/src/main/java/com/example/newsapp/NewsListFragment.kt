@@ -51,8 +51,8 @@ class NewsListFragment : Fragment() {
 
         val categorySpinner = binding.newsCategories
         val categoryList = listOf("General", "Business", "Entertainment", "Health", "Science", "Sports", "Technology") // Example category list
-        val spinnerAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, categoryList)
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val spinnerAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, categoryList)
+        spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         categorySpinner.adapter = spinnerAdapter
 
         categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
