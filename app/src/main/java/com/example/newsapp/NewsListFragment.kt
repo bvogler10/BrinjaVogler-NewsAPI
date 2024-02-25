@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -54,13 +55,29 @@ class NewsListFragment : Fragment() {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categorySpinner.adapter = spinnerAdapter
 
+        categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedCategory: String = categoryList[position]
+                newsListViewModel.getNewsByCategory(selectedCategory)
+            }
 
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
         newsListViewModel.articles.observe(viewLifecycleOwner) { newsList ->
             adapter.updateNewsList(newsList)
         }
 
         return binding.root
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

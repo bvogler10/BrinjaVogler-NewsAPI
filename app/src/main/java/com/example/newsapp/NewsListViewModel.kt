@@ -43,4 +43,29 @@ class NewsListViewModel : ViewModel() {
             }
         }
     }
+
+    fun getNewsByCategory(category: String) {
+        viewModelScope.launch {
+            try {
+                // Perform the network call in the background thread
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitInstance.newsApi.getTopNewsByCategory(category).execute()
+                }
+
+                if (response.isSuccessful) {
+                    val articlesList = response.body()
+                    if (articlesList != null) {
+                        // Update LiveData on the main thread
+                        _articles.postValue(articlesList.articles)
+                    }
+                } else {
+                    // Handle unsuccessful response
+                    Log.e("NewsListViewModel", "Unsuccessful response: ${response.code()}")
+                }
+            } catch (e: IOException) {
+                // Handle IO exception
+                Log.e("NewsListViewModel", "IO Exception: ${e.message}", e)
+            }
+        }
+    }
 }
