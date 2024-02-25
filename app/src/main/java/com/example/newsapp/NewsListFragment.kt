@@ -2,6 +2,7 @@ package com.example.newsapp
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -29,12 +30,10 @@ class NewsListFragment : Fragment() {
 
     private val newsListViewModel: NewsListViewModel by viewModels()
 
-//
-//    companion object {
-//        fun newInstance() = NewsListFragment()
-//    }
 
-    private lateinit var viewModel: NewsListViewModel
+    companion object {
+        fun newInstance() = NewsListFragment()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,26 +42,16 @@ class NewsListFragment : Fragment() {
         _binding = FragmentNewsListBinding.inflate(inflater, container, false)
 
         binding.NewsRecyclerView.layoutManager = LinearLayoutManager(context)
+        val adapter = NewsListAdapter(emptyList())
+        binding.NewsRecyclerView.adapter = adapter
+        Log.d("NewsListFragment", "i am in newslistfragment")
+
+
+        newsListViewModel.articles.observe(viewLifecycleOwner) { newsList ->
+            adapter.updateNewsList(newsList)
+        }
 
         return binding.root
-        //return inflater.inflate(R.layout.fragment_news_list, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                newsListViewModel.crimes.collect { crimes ->
-//                    binding.NewsRecyclerView.adapter =
-//                        CrimeListAdapter(crimes) { crimeId ->
-//                            findNavController().navigate(
-//                                CrimeListFragmentDirections.showCrimeDetail(crimeId)
-//                            )
-                        //}
-                //}
-            }
-        }
     }
 
     override fun onDestroyView() {
